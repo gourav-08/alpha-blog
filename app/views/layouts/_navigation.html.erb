@@ -15,9 +15,9 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <% if logged_in? %>
-                <%= link_to 'Create new article', new_article_path, class:"dropdown-item" %>
+                <%= link_to 'Create new article', new_article_path, class:"dropdown-item text-info" %>
               <% end %>
-              <%= link_to 'View articles', articles_path, class:"dropdown-item" %>
+              <%= link_to 'View articles', articles_path, class:"dropdown-item text-info" %>
             </div>
           </li>
 
@@ -27,8 +27,10 @@
                 Profile [<%= current_user.username %>]
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <%= link_to 'View your profile', user_path(current_user), class:"dropdown-item" %>
-                <%= link_to 'Edit your profile', edit_user_path(current_user), class:"dropdown-item" %>
+                <%= link_to 'View your profile', user_path(current_user), class:"dropdown-item text-info" %>
+                <%= link_to 'Edit your profile', edit_user_path(current_user), class:"dropdown-item text-info" %>
+                <%= link_to 'Delete your profile', user_path(current_user), class:"dropdown-item text-danger", method: :delete,
+                    data: { confirm: "Are you sure?" } %>
               </div>
             </li>
           <li class="nav-item">
