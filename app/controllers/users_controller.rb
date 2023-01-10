@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy]
+  before_action :not_nil, only: %i[show edit update destroy]
   before_action :require_user, only: %i[edit update destroy]
   before_action :require_same_user, only: %i[edit update destroy]
 
@@ -55,7 +56,18 @@ class UsersController < ApplicationController
   end
 
   def set_user
-    @user = User.find(params[:id])
+    begin
+      @user = User.find params[:id]
+    rescue ActiveRecord::RecordNotFound => e
+      @user = nil
+    end
+  end
+
+  def not_nil
+    if @user.nil?
+      flash[:alert] = "User not found"
+      redirect_to users_path
+    end
   end
 
   def require_same_user

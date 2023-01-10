@@ -1,5 +1,6 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: %i[show edit update destroy]
+  before_action :not_nil, only: %i[show edit update destroy]
   before_action :require_user, except: %i[show index]
   before_action :require_same_user, only: %i[edit update destroy]
 
@@ -50,7 +51,19 @@ class ArticlesController < ApplicationController
   end
 
   def set_article
-    @article = Article.find(params[:id])
+    # @article = Article.find(params[:id])
+    begin
+      @article = Article.find params[:id]
+    rescue ActiveRecord::RecordNotFound => e
+      @article = nil
+    end
+  end
+
+  def not_nil
+    if @article.nil?
+      flash[:alert] = "Article not found"
+      redirect_to articles_path
+    end
   end
 
   def require_same_user
